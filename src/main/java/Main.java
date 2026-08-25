@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.*;
 
 public class Main {
@@ -11,8 +12,25 @@ public class Main {
                 String typeInput = input.substring(5);
                 if (Arrays.asList(commands).contains(typeInput)) {
                     System.out.println(typeInput + " is a shell builtin");
-                } else {
-                    System.out.println(typeInput + ": not found");
+                } 
+                else {
+                    String pathenv = System.getenv(typeInput);
+                    boolean found = false;
+
+                    if (pathenv != null) {
+                        String[] directories = pathenv.split(File.pathSeparator);
+                    for (String p : directories) {
+                        File file = new File(p, typeInput);
+                        if (file.exists()) {
+                            System.out.println(typeInput + " is " + file.getAbsolutePath());
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        System.out.println(typeInput + ": not found");
+                    }
+                }
                 }
             }
             else if (input.equals("exit")) {
