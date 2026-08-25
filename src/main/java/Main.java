@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String[] commands = {"echo", "exit"};
+        String[] commands = {"echo", "exit", "type"};
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("$ ");
