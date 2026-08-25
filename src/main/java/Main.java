@@ -14,14 +14,14 @@ public class Main {
                     System.out.println(typeInput + " is a shell builtin");
                 } 
                 else {
-                    String pathenv = System.getenv(typeInput);
+                    String pathenv = System.getenv("PATH");
                     boolean found = false;
 
                     if (pathenv != null) {
                         String[] directories = pathenv.split(File.pathSeparator);
-                    for (String p : directories) {
-                        File file = new File(p, typeInput);
-                        if (file.exists()) {
+                    for (String dir : directories) {
+                        File file = new File(dir, typeInput);
+                        if (file.exists() && file.canExecute()) {
                             System.out.println(typeInput + " is " + file.getAbsolutePath());
                             found = true;
                             break;
@@ -30,7 +30,7 @@ public class Main {
                     if (!found) {
                         System.out.println(typeInput + ": not found");
                     }
-                }
+                    }   
                 }
             }
             else if (input.equals("exit")) {
