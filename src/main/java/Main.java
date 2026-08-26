@@ -108,8 +108,8 @@ public class Main {
                     else if (c != '\'') {
                         System.out.print(c);
                     }
-                    break;   
                 }
+                System.out.println();
             }
             else {
                 // Split the input into command and arguments
