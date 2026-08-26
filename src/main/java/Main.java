@@ -39,12 +39,14 @@ public class Main {
                 System.out.println(currentDir);
             }
             else if (input.startsWith("cd ")) {
+                // Get the current working directory, and the path to change to
                 Path currentDir = new File(System.getProperty("user.dir")).toPath();
                 String path = input.substring(3).trim();
                 File dir = new File(path);
                 
                 // tilde 
                 if (input.endsWith("~")) {
+                    // Get the user's home directory from the environment variable
                     String homeDir = System.getenv("HOME");
                     File home = new File(homeDir);
                     if (home.exists() && home.isDirectory()) {
@@ -55,11 +57,14 @@ public class Main {
                 }
                 // directory path after ~ character
                 else if (input.contains("~")) {
+                    // Get the user's home directory from the environment variable
                     String homeDir = System.getenv("HOME");
                     String relativePath = input.substring(input.indexOf("~") + 1).trim();
                     File home = new File(homeDir);
+                    // Create a new File object for the target directory
                     File targetDir = new File(home, relativePath);
                     if (targetDir.exists() && targetDir.isDirectory()) {
+                        // Change the current working directory to the target directory
                         System.setProperty("user.dir", targetDir.getAbsolutePath());
                     } else {
                         System.out.println("cd: " + path + ": No such file or directory");
@@ -87,12 +92,31 @@ public class Main {
                 break;
             }
             else if (input.contains("echo")) {
-                System.out.println(input.substring(5));
+                boolean inSingleQuotes = false;
+                String message = input.substring(5);
+                char[] chars = message.toCharArray();
+                for (char c : chars) {
+                    if (c == '\'') {
+                        inSingleQuotes = !inSingleQuotes;
+                    }
+                    else if (c == ' ' && inSingleQuotes) {
+                        System.out.print(c);
+                    }
+                    else if (c == ' ' && !inSingleQuotes) {
+                        continue;
+                    }
+                    else if (c != '\'') {
+                        System.out.print(c);
+                    }
+                    break;   
+                }
             }
             else {
+                // Split the input into command and arguments
                 String[] programs = input.split(" ");
                 String command = programs[0];
                 String executablePath = new Main().getExecutablePath(command);
+                // If the executable path is found, execute the command using ProcessBuilder
                 if (executablePath != null) {
                     ProcessBuilder processBuilder = new ProcessBuilder(programs);
                     processBuilder.inheritIO();
