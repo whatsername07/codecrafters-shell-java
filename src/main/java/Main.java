@@ -100,14 +100,16 @@ public class Main {
 
                 for (char c : message.toCharArray()) {
                     if (c == '\'') {
+                        // Toggle single quote state (do not append the quote character)
                         inSingleQuotes = !inSingleQuotes;
-                    }
-                    else if (c == ' ' && inSingleQuotes) {
+                    } else if (c == ' ' && !inSingleQuotes) {
+                        // Unquoted space marks the end of an argument token
                         if (currentArg.length() > 0) {
                             argsList.add(currentArg.toString());
-                            currentArg.setLength(0);
+                            currentArg.setLength(0); // Reset buffer for the next token
                         }
                     } else {
+                        // Quoted spaces or regular characters are appended to the current argument
                         currentArg.append(c);
                     }
                 }
