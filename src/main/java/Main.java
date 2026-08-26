@@ -110,10 +110,9 @@ public class Main {
                     } else {
                         currentArg.append(c);
                     }
-
-                    if (currentArg.length() > 0) {
+                }
+                if (currentArg.length() > 0) {
                         argsList.add(currentArg.toString());
-                    }
                 }
                 System.out.println(String.join(" ", argsList));
             }
