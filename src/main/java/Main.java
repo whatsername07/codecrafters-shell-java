@@ -93,23 +93,26 @@ public class Main {
             }
             else if (input.contains("echo")) {
                 boolean inSingleQuotes = false;
+                List<String> argsList = new ArrayList<>();
+                StringBuilder currentArg = new StringBuilder();
+
                 String message = input.substring(5);
-                char[] chars = message.toCharArray();
-                for (char c : chars) {
+
+                for (char c : message.toCharArray()) {
                     if (c == '\'') {
                         inSingleQuotes = !inSingleQuotes;
                     }
                     else if (c == ' ' && inSingleQuotes) {
-                        System.out.print(c);
+                        if (currentArg.length() > 0) {
+                            argsList.add(currentArg.toString());
+                            currentArg.setLength(0);
+                        }
+                    } else {
+                        currentArg.append(c);
                     }
-                    else if (c == ' ' && !inSingleQuotes && message.indexOf(c) != message.length() - 1) {
-                        System.out.print(c);
-                    }
-                    else if (c == ' ' && !inSingleQuotes && message.indexOf(c) == message.length() - 1) {
-                        continue;
-                    }
-                    else if (c != '\'') {
-                        System.out.print(c);
+
+                    if (currentArg.length() > 0) {
+                        argsList.add(currentArg.toString());
                     }
                 }
                 System.out.println();
