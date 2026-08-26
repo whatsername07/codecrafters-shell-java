@@ -43,24 +43,8 @@ public class Main {
                 String path = input.substring(3).trim();
                 File dir = new File(path);
                 
-                // absolute path
-                if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
-                    System.setProperty("user.dir", dir.getAbsolutePath());
-                }
-                else if (dir.isAbsolute() && (!dir.exists() || !dir.isDirectory())) {
-                    System.out.println("cd: " + path + ": No such file or directory");
-                }
-                // relative path
-                else if (!dir.isAbsolute()) {
-                    currentDir = currentDir.resolve(path).normalize();
-                    if (currentDir.toFile().exists() && currentDir.toFile().isDirectory()) {
-                        System.setProperty("user.dir", currentDir.toFile().getAbsolutePath());
-                    } else {
-                        System.out.println("cd: " + path + ": No such file or directory");
-                    }
-                }
-                // ~ character
-                else if (input.endsWith("~")) {
+                // tilde 
+                if (input.endsWith("~")) {
                     String homeDir = System.getProperty("user.home");
                     File home = new File(homeDir);
                     if (home.exists() && home.isDirectory()) {
@@ -80,6 +64,22 @@ public class Main {
                     } else {
                         System.out.println("cd: " + path + ": No such file or directory");
                 }
+                }
+                // absolute path
+                else if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
+                    System.setProperty("user.dir", dir.getAbsolutePath());
+                }
+                else if (dir.isAbsolute() && (!dir.exists() || !dir.isDirectory())) {
+                    System.out.println("cd: " + path + ": No such file or directory");
+                }
+                // relative path
+                else if (!dir.isAbsolute()) {
+                    currentDir = currentDir.resolve(path).normalize();
+                    if (currentDir.toFile().exists() && currentDir.toFile().isDirectory()) {
+                        System.setProperty("user.dir", currentDir.toFile().getAbsolutePath());
+                    } else {
+                        System.out.println("cd: " + path + ": No such file or directory");
+                    }
                 }
             }
             else if (input.equals("exit")) {
