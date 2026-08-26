@@ -1,3 +1,4 @@
+import java.nio.file.Path;
 import java.io.File;
 import java.util.*;
 
@@ -38,22 +39,34 @@ public class Main {
                 System.out.println(currentDir);
             }
             else if (input.startsWith("cd ")) {
+                Path currentDir = new File(System.getProperty("user.dir")).toPath();
                 String path = input.substring(3).trim();
                 File dir = new File(path);
+                
                 // absolute path
                 if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
                     System.setProperty("user.dir", dir.getAbsolutePath());
                 }
                 // relative path
-                if (!dir.isAbsolute()) {
+                else if (!dir.isAbsolute()) {
                     path = path.substring(2);
                     dir = new File(System.getProperty("user.dir"), path);
+                    currentDir = currentDir.resolve(dir.toPath());
+                    if (currentDir.toFile().exists() && currentDir.toFile().isDirectory()) {
+                        System.setProperty("user.dir", currentDir.toFile().getAbsolutePath());
+                    }
+                    // .. handling
+                    else if (path.equals("..")) {
+                        currentDir = currentDir.getParent();
+                        if (currentDir != null) {
+                            System.setProperty("user.dir", currentDir.toFile().getAbsolutePath());
+                        }
+                    }
+                    else {
+                        System.out.println("cd: " + path + ": No such file or directory");
+                    }
                 }
-                if (dir.exists() && dir.isDirectory()) {
-                    System.setProperty("user.dir", dir.getAbsolutePath());
-                } else {
-                    System.out.println("cd: " + path + ": No such file or directory");
-                }
+                
                 // ~ character
             }
             else if (input.equals("exit")) {
