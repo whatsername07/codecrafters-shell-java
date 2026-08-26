@@ -40,11 +40,15 @@ public class Main {
             else if (input.startsWith("cd ")) {
                 String path = input.substring(3).trim();
                 File dir = new File(path);
-                if (dir.exists() && dir.isDirectory()) {
+                // absolute path
+                if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
                     System.setProperty("user.dir", dir.getAbsolutePath());
-                } else {
-                    System.out.println("cd: " + path + ": No such file or directory");
                 }
+                // relative path
+                if (!dir.isAbsolute()) {
+                    dir = new File(System.getProperty("user.dir"), path);
+                }
+                // ~ character
             }
             else if (input.equals("exit")) {
                 scanner.close();
