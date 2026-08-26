@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String[] commands = {"echo", "exit", "type"};
+        String[] commands = {"echo", "exit", "type", "pwd"};
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("$ ");
@@ -32,6 +32,11 @@ public class Main {
                     }
                     }   
                 }
+            }
+            else if (input.equals("pwd")) {
+                String currentDir = System.getProperty("user.dir");
+                System.out.println(currentDir);
+            }
             }
             else if (input.equals("exit")) {
                 scanner.close();
