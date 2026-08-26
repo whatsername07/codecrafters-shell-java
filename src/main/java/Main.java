@@ -101,31 +101,7 @@ public class Main {
                 break;
             }
             else if (command.equals("echo")) {
-                boolean inSingleQuotes = false;
-                List<String> argsList = new ArrayList<>();
-                StringBuilder currentArg = new StringBuilder();
-
-                String message = arguments.isEmpty() ? "" : arguments.get(0);
-
-                for (char c : message.toCharArray()) {
-                    if (c == '\'') {
-                        // Toggle single quote state (do not append the quote character)
-                        inSingleQuotes = !inSingleQuotes;
-                    } else if (c == ' ' && !inSingleQuotes) {
-                        // Unquoted space marks the end of an argument token
-                        if (currentArg.length() > 0) {
-                            argsList.add(currentArg.toString());
-                            currentArg.setLength(0); // Reset buffer for the next token
-                        }
-                    } else {
-                        // Quoted spaces or regular characters are appended to the current argument
-                        currentArg.append(c);
-                    }
-                }
-                if (currentArg.length() > 0) {
-                        argsList.add(currentArg.toString());
-                }
-                System.out.println(String.join(" ", argsList));
+                System.out.println(String.join(" ", arguments));
             }
             else {
                 // Split the input into command and arguments
