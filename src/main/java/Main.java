@@ -9,8 +9,17 @@ public class Main {
         while (true) {
             System.out.print("$ ");
             String input = scanner.nextLine();
-            if (input.contains("type")) {
-                String typeInput = input.substring(5);
+
+            List<String> commandTokens = parseTokens(input);
+            if (commandTokens.isEmpty()) {
+                continue; // Skip empty input
+            }
+
+            String command = commandTokens.get(0);
+            List<String> arguments = commandTokens.subList(1, commandTokens.size());
+
+            if (command.equals("type")) {
+                String typeInput = arguments.isEmpty() ? "" : arguments.get(0);
                 if (Arrays.asList(commands).contains(typeInput)) {
                     System.out.println(typeInput + " is a shell builtin");
                 } 
@@ -34,18 +43,18 @@ public class Main {
                     }   
                 }
             }
-            else if (input.equals("pwd")) {
+            else if (command.equals("pwd")) {
                 String currentDir = System.getProperty("user.dir");
                 System.out.println(currentDir);
             }
-            else if (input.startsWith("cd ")) {
+            else if (command.equals("cd")) {
                 // Get the current working directory, and the path to change to
                 Path currentDir = new File(System.getProperty("user.dir")).toPath();
-                String path = input.substring(3).trim();
+                String path = arguments.isEmpty() ? "" : arguments.get(0);
                 File dir = new File(path);
-                
-                // tilde 
-                if (input.endsWith("~")) {
+
+                // tilde
+                if (path.endsWith("~")) {
                     // Get the user's home directory from the environment variable
                     String homeDir = System.getenv("HOME");
                     File home = new File(homeDir);
@@ -56,10 +65,10 @@ public class Main {
                     }
                 }
                 // directory path after ~ character
-                else if (input.contains("~")) {
+                else if (path.contains("~")) {
                     // Get the user's home directory from the environment variable
                     String homeDir = System.getenv("HOME");
-                    String relativePath = input.substring(input.indexOf("~") + 1).trim();
+                    String relativePath = path.substring(path.indexOf("~") + 1).trim();
                     File home = new File(homeDir);
                     // Create a new File object for the target directory
                     File targetDir = new File(home, relativePath);
@@ -87,16 +96,16 @@ public class Main {
                     }
                 }
             }
-            else if (input.equals("exit")) {
+            else if (command.equals("exit")) {
                 scanner.close();
                 break;
             }
-            else if (input.contains("echo")) {
+            else if (command.equals("echo")) {
                 boolean inSingleQuotes = false;
                 List<String> argsList = new ArrayList<>();
                 StringBuilder currentArg = new StringBuilder();
 
-                String message = input.substring(5);
+                String message = arguments.isEmpty() ? "" : arguments.get(0);
 
                 for (char c : message.toCharArray()) {
                     if (c == '\'') {
@@ -120,20 +129,45 @@ public class Main {
             }
             else {
                 // Split the input into command and arguments
-                String[] programs = input.split(" ");
-                String command = programs[0];
-                String executablePath = new Main().getExecutablePath(command);
+                List<String> tokens = parseTokens(input);
+                String commandToken = tokens.get(0);
+                String executablePath = new Main().getExecutablePath(commandToken);
                 // If the executable path is found, execute the command using ProcessBuilder
                 if (executablePath != null) {
-                    ProcessBuilder processBuilder = new ProcessBuilder(programs);
+                    ProcessBuilder processBuilder = new ProcessBuilder(tokens);
                     processBuilder.inheritIO();
                     Process process = processBuilder.start();
                     process.waitFor();
                 } else {
-                    System.out.println(command + ": command not found");
+                    System.out.println(commandToken + ": command not found");
                 }
             }
         }
+    }
+
+    private static List<String> parseTokens(String input) {
+        List<String> tokens = new ArrayList<>();
+        StringBuilder currentToken = new StringBuilder();
+        boolean inSingleQuotes = false;
+
+        for (char c : input.toCharArray()) {
+            if (c == '\'') {
+                inSingleQuotes = !inSingleQuotes;
+            } else if (c == ' ' && !inSingleQuotes) {
+                if (currentToken.length() > 0) {
+                    tokens.add(currentToken.toString());
+                    currentToken.setLength(0);
+                }
+            } else {
+                currentToken.append(c);
+            }
+        }
+
+        if (currentToken.length() > 0) {
+            tokens.add(currentToken.toString());
+        }
+
+        return tokens;
     }
 
     public String getExecutablePath(String command) {
