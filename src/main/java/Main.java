@@ -47,6 +47,9 @@ public class Main {
                 if (dir.isAbsolute() && dir.exists() && dir.isDirectory()) {
                     System.setProperty("user.dir", dir.getAbsolutePath());
                 }
+                else if (dir.isAbsolute() && (!dir.exists() || !dir.isDirectory())) {
+                    System.out.println("cd: " + path + ": No such file or directory");
+                }
                 // relative path
                 else if (!dir.isAbsolute()) {
                     currentDir = currentDir.resolve(path).normalize();
