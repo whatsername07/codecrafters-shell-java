@@ -46,6 +46,7 @@ public class Main {
                 }
                 // relative path
                 if (!dir.isAbsolute()) {
+                    path = path.substring(2);
                     dir = new File(System.getProperty("user.dir"), path);
                 }
                 if (dir.exists() && dir.isDirectory()) {
