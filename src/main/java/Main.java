@@ -103,7 +103,7 @@ public class Main {
                         System.out.print(c);
                     }
                     else if (c == ' ' && !inSingleQuotes) {
-                        continue;
+                        System.out.print(c);
                     }
                     else if (c != '\'') {
                         System.out.print(c);
