@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String[] commands = {"echo", "exit", "type", "pwd"};
+        String[] commands = {"echo", "exit", "type", "pwd", "cd"};
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("$ ");
@@ -36,6 +36,15 @@ public class Main {
             else if (input.equals("pwd")) {
                 String currentDir = System.getProperty("user.dir");
                 System.out.println(currentDir);
+            }
+            else if (input.startsWith("cd ")) {
+                String path = input.substring(3).trim();
+                File dir = new File(path);
+                if (dir.exists() && dir.isDirectory()) {
+                    System.setProperty("user.dir", dir.getAbsolutePath());
+                } else {
+                    System.out.println("cd: " + path + ": No such file or directory");
+                }
             }
             else if (input.equals("exit")) {
                 scanner.close();
