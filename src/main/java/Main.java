@@ -115,7 +115,7 @@ public class Main {
                         argsList.add(currentArg.toString());
                     }
                 }
-                System.out.println();
+                System.out.println(String.join(" ", argsList));
             }
             else {
                 // Split the input into command and arguments
