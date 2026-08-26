@@ -45,7 +45,7 @@ public class Main {
                 
                 // tilde 
                 if (input.endsWith("~")) {
-                    String homeDir = System.getProperty("user.home");
+                    String homeDir = System.getProperty("HOME");
                     File home = new File(homeDir);
                     if (home.exists() && home.isDirectory()) {
                         System.setProperty("user.dir", home.getAbsolutePath());
@@ -55,7 +55,7 @@ public class Main {
                 }
                 // directory path after ~ character
                 else if (input.contains("~")) {
-                    String homeDir = System.getProperty("user.home");
+                    String homeDir = System.getProperty("HOME");
                     String relativePath = input.substring(input.indexOf("~") + 1).trim();
                     File home = new File(homeDir);
                     File targetDir = new File(home, relativePath);
