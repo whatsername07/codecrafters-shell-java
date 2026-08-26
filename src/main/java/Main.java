@@ -48,6 +48,11 @@ public class Main {
                 if (!dir.isAbsolute()) {
                     dir = new File(System.getProperty("user.dir"), path);
                 }
+                if (dir.exists() && dir.isDirectory()) {
+                    System.setProperty("user.dir", dir.getAbsolutePath());
+                } else {
+                    System.out.println("cd: " + path + ": No such file or directory");
+                }
                 // ~ character
             }
             else if (input.equals("exit")) {
