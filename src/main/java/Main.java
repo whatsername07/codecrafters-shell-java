@@ -37,7 +37,6 @@ public class Main {
                 String currentDir = System.getProperty("user.dir");
                 System.out.println(currentDir);
             }
-            }
             else if (input.equals("exit")) {
                 scanner.close();
                 break;
