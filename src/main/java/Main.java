@@ -49,20 +49,10 @@ public class Main {
                 }
                 // relative path
                 else if (!dir.isAbsolute()) {
-                    path = path.substring(2);
-                    dir = new File(System.getProperty("user.dir"), path);
-                    currentDir = currentDir.resolve(dir.toPath());
+                    currentDir = currentDir.resolve(path).normalize();
                     if (currentDir.toFile().exists() && currentDir.toFile().isDirectory()) {
                         System.setProperty("user.dir", currentDir.toFile().getAbsolutePath());
-                    }
-                    // .. handling
-                    else if (path.equals("..")) {
-                        currentDir = currentDir.getParent();
-                        if (currentDir != null) {
-                            System.setProperty("user.dir", currentDir.toFile().getAbsolutePath());
-                        }
-                    }
-                    else {
+                    } else {
                         System.out.println("cd: " + path + ": No such file or directory");
                     }
                 }
