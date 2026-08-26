@@ -59,8 +59,28 @@ public class Main {
                         System.out.println("cd: " + path + ": No such file or directory");
                     }
                 }
-                
                 // ~ character
+                else if (input.endsWith("~")) {
+                    String homeDir = System.getProperty("user.home");
+                    File home = new File(homeDir);
+                    if (home.exists() && home.isDirectory()) {
+                        System.setProperty("user.dir", home.getAbsolutePath());
+                    } else {
+                        System.out.println("cd: " + path + ": No such file or directory");
+                    }
+                }
+                // directory path after ~ character
+                else if (input.contains("~")) {
+                    String homeDir = System.getProperty("user.home");
+                    String relativePath = input.substring(input.indexOf("~") + 1).trim();
+                    File home = new File(homeDir);
+                    File targetDir = new File(home, relativePath);
+                    if (targetDir.exists() && targetDir.isDirectory()) {
+                        System.setProperty("user.dir", targetDir.getAbsolutePath());
+                    } else {
+                        System.out.println("cd: " + path + ": No such file or directory");
+                }
+                }
             }
             else if (input.equals("exit")) {
                 scanner.close();
