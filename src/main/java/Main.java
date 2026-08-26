@@ -102,8 +102,11 @@ public class Main {
                     else if (c == ' ' && inSingleQuotes) {
                         System.out.print(c);
                     }
-                    else if (c == ' ' && !inSingleQuotes) {
+                    else if (c == ' ' && !inSingleQuotes && message.indexOf(c) != message.length() - 1) {
                         System.out.print(c);
+                    }
+                    else if (c == ' ' && !inSingleQuotes && message.indexOf(c) == message.length() - 1) {
+                        continue;
                     }
                     else if (c != '\'') {
                         System.out.print(c);
