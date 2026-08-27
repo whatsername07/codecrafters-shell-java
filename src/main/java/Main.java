@@ -134,7 +134,7 @@ public class Main {
                 escaped = !escaped;
                 continue;
             }
-            else if (c == '\\') {
+            else if (c == '\\' && !inSingleQuotes) {
                 escaped = !escaped;
                 continue;
             }
