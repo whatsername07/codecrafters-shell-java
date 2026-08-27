@@ -139,7 +139,7 @@ public class Main {
                 escaped = !escaped;
                 continue;
             }
-            else if (c == '\\' && !inSingleQuotes && !inDoubleQuotes) {
+            else if (c == '\\') {
                 escaped = !escaped;
                 continue;
             }
