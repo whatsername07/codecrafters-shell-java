@@ -125,9 +125,16 @@ public class Main {
         List<String> tokens = new ArrayList<>();
         StringBuilder currentToken = new StringBuilder();
         boolean inSingleQuotes = false;
+        boolean inDoubleQuotes = false;
 
         for (char c : input.toCharArray()) {
-            if (c == '\'') {
+            if (c == '"') {
+             inDoubleQuotes = !inDoubleQuotes;
+            }
+            else if (inDoubleQuotes) {
+                currentToken.append(c);
+            }
+            else if (c == '\'') {
                 inSingleQuotes = !inSingleQuotes;
             } else if (c == ' ' && !inSingleQuotes) {
                 if (currentToken.length() > 0) {
