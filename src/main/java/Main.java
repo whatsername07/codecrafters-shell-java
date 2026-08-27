@@ -126,8 +126,16 @@ public class Main {
         StringBuilder currentToken = new StringBuilder();
         boolean inSingleQuotes = false;
         boolean inDoubleQuotes = false;
+        boolean escaped = false;
 
         for (char c : input.toCharArray()) {
+            if (escaped) {
+                currentToken.append(c);
+                escaped = !escaped;
+            }
+            else if (c == '\\') {
+                escaped = !escaped;
+            }
             if (c == '"') {
              inDoubleQuotes = !inDoubleQuotes;
             }
