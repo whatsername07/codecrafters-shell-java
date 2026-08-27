@@ -134,11 +134,16 @@ public class Main {
                 escaped = !escaped;
                 continue;
             }
+            else if (escaped && inDoubleQuotes && (c == '"' || c == '\\')) {
+                currentToken.append(c);
+                escaped = !escaped;
+                continue;
+            }
             else if (c == '\\' && !inSingleQuotes && !inDoubleQuotes) {
                 escaped = !escaped;
                 continue;
             }
-            if (c == '"' && !inSingleQuotes) {
+            else if (c == '"' && !inSingleQuotes) {
              inDoubleQuotes = !inDoubleQuotes;
             }
             else if (inDoubleQuotes) {
