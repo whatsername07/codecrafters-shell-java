@@ -138,15 +138,15 @@ public class Main {
                 escaped = !escaped;
                 continue;
             }
-            if (c == '"') {
+            if (c == '"' && !inSingleQuotes) {
              inDoubleQuotes = !inDoubleQuotes;
             }
             else if (inDoubleQuotes) {
                 currentToken.append(c);
             }
-            else if (c == '\'') {
+            else if (c == '\'' && !inDoubleQuotes) {
                 inSingleQuotes = !inSingleQuotes;
-            } else if (c == ' ' && !inSingleQuotes) {
+            } else if (c == ' ' && !inSingleQuotes && !inDoubleQuotes) {
                 if (currentToken.length() > 0) {
                     tokens.add(currentToken.toString());
                     currentToken.setLength(0);
