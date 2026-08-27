@@ -132,9 +132,11 @@ public class Main {
             if (escaped) {
                 currentToken.append(c);
                 escaped = !escaped;
+                continue;
             }
             else if (c == '\\') {
                 escaped = !escaped;
+                continue;
             }
             if (c == '"') {
              inDoubleQuotes = !inDoubleQuotes;
